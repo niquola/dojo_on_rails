@@ -3,5 +3,9 @@ DojoOnRails
 
 Dojo and Rails integration
 
+now has:
+* dojo - helper
+* rake dojo:install - install dojo from trunk to project
+* script/generate dijit CustomControl - generator for custom dijits
 
 Copyright (c) 2008 [niquola], released under the MIT license
