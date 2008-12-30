@@ -1,0 +1,27 @@
+!!! XML
+!!!
+%html
+  %head
+    %title medapp 2.0
+    = dojo :debug=>false, :parse=>true, :theme=>'tundra' do
+      - require 'dijit.form.Button'
+      - require 'dijit.layout.BorderContainer'
+      - require 'dijit.layout.ContentPane'  
+      - require 'dijit.layout.AccordionContainer'
+      - require 'dijit.layout.AccordionContainer'
+      - require 'dijit.layout.AccordionPane'
+    %style html,body {width:100%;height:100%;padding:0;marging:0}
+  %body{:class=>'tundra'}
+    #mainContainer{:dojoType=>"dijit.layout.BorderContainer", :gutters=>"true", :style=>"height:100%"}
+      #headerContainer{:dojoType=>"dijit.layout.ContentPane", :region=>"top", :splitter=>"false"} Hello
+      #contentContainer{:dojoType=>"dijit.layout.BorderContainer", :liveSplitters=>"false", :design=>"sidebar", :region=>"center"}
+      #leftPane{:dojoType=>"dijit.layout.BorderContainer", :minSize=>"20",:style=>"width:200px;", :region=>"leading", :splitter=>"true"}
+        #navAcordionPane{:dojoType=>"dijit.layout.AccordionContainer",:region=>"center"}
+          %div{:dojoType=>"dijit.layout.AccordionPane",:title=>"Patients/Visits"}
+            .padded
+              %a{:href=>'/patients'} Patients
+          %div{:dojoType=>"dijit.layout.AccordionPane",:title=>"Labs",:selected=>"true"}
+            .padded
+              #labs Loading...
+      %div{:dojoType=>"dijit.layout.AccordionPane",:title=>"Statistics"}
+      #contentPane{:dojoType=>"dijit.layout.ContentPane", :region=>"center", :splitter=>"true"} hello
