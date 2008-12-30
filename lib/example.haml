@@ -1,0 +1,47 @@
+%div{ :dojotype => "dijit.form.DropDownButton" }
+  %span
+    Show Tooltip Dialog
+  #tooltipDlg{ :title => "Enter Login information", :execute => "alert('submitted w/args:\\n' + dojo.toJson(arguments[0], true));", :dojotype => "dijit.TooltipDialog" }
+    %table
+      %tr
+        %td
+          %label{ :for => "user" }
+            User:
+        %td
+          %input#user{ :name => "user", :dojotype => "dijit.form.TextBox", :type => "text" }
+      %tr
+        %td
+          %label{ :for => "pwd" }
+            Password:
+        %td
+          %input#pwd{ :name => "pwd", :dojotype => "dijit.form.TextBox", :type => "password" }
+      %tr
+        %td
+          %label{ :for => "date2" }
+            Date:
+        %td
+          %input#date2{ :name => "date", :dojotype => "dijit.form.DateTextBox" }
+      %tr
+        %td
+          %label{ :for => "time2" }
+            Time:
+        %td
+          %input#time2{ :name => "time", :dojotype => "dijit.form.TimeTextBox" }
+      %tr
+        %td
+          %label{ :for => "combo" }
+            Pizza:
+        %td
+          %select#combo{ :name => "combo", :dojotype => "dijit.form.FilteringSelect", :hasdownarrow => "true" }
+            %option{ :value => "cheese" }
+              cheese
+            %option{ :value => "pepperoni" }
+              pepperoni
+            %option{ :value => "sausage" }
+              sausage
+      %tr
+        %td{ :align => "center", :colspan => "2" }
+          %button{ :name => "submit", :dojotype => "dijit.form.Button", :type => "submit" }
+            Order
+    %div{ :style => "width: 300px;" }
+      Note: This tooltip dialog has a bunch of nested drop downs for testing keyboard and click handling
