@@ -1,13 +1,8 @@
 require 'ftools'
-
-
 desc "install dojo"
 namespace :dojo do
   task :install do
-    # ruby script to set the directory.
-
     puts "The current directory is #{Dir.getwd}"
-
     Dir.chdir "#{RAILS_ROOT}/public"
     puts Dir.getwd()
 
@@ -21,6 +16,14 @@ namespace :dojo do
         puts `svn checkout  http://svn.dojotoolkit.org/src/#{package}/trunk/ #{package}`
       end
     end
+  end
+
+  desc "build dojo package"
+  task :build do
+    puts "not realized"
+    #add profile generation from dojo helper and generate build for each view
+    #cd #{RAILS_ROOT}/public/dojo/util/buildscripts/
+    #build.sh profile=#{profile_name} action=release
   end
 end
 
