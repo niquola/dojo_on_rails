@@ -10,7 +10,7 @@
             <script type="text/javascript" src="/dojo/dojo/dojo.js" djConfig="parseOnLoad:true, isDebug: true">
             </script>
     <script>
-    	dojo.require("app.<%= class_name %>");
+    	dojo.require("app.views.<%= class_name %>");
       dojo.addOnLoad(function(){
         <%= class_name.downcase %>.doit();
       });
@@ -18,6 +18,6 @@
     <style>html,body {width:100%;height:100%;margin:0pt;padding:0pt;}</style>
   </head>
   <body class='tundra'>
-    <div dojoType="app.<%= class_name %>" jsId="<%= class_name.downcase %>"></div>
+    <div dojoType="app.views.<%= class_name %>" jsId="<%= class_name.downcase %>"></div>
   </body>
 </html>

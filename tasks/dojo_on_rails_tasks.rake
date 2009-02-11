@@ -11,19 +11,21 @@ namespace :dojo do
     puts Dir.getwd()
 
     ['dojo','dijit','dojox','util'].each do |package|
-      unless File.exists? package
+      #unless File.exists? package
+        puts `rm -R #{package}`
         puts "Checkout #{package} trunk. Please wait."
-        puts `svn checkout  http://svn.dojotoolkit.org/src/#{package}/trunk/ #{package}`
-      end
+        puts `svn export  http://svn.dojotoolkit.org/src/#{package}/trunk/ #{package}`
+      #end
     end
   end
 
   desc "build dojo package"
   task :build do
-    puts "not realized"
     #add profile generation from dojo helper and generate build for each view
-    #cd #{RAILS_ROOT}/public/dojo/util/buildscripts/
     #build.sh profile=#{profile_name} action=release
+    Dir.chdir "#{RAILS_ROOT}/public/dojo/util/buildscripts/"
+    profile_name='app'
+    puts `./build.sh profileFile=#{RAILS_ROOT}/public/dojo/app/profiles/#{profile_name}.profile.js action=release cssOptimize=comments optimize=shrinkSafe`
   end
 end
 

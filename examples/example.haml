@@ -1,27 +1,34 @@
 !!! XML
-!!!
+!!! Strict
 %html
   %head
     %title medapp 2.0
-    = dojo :debug=>false, :parse=>true, :theme=>'tundra' do
-      - require 'dijit.form.Button'
-      - require 'dijit.layout.BorderContainer'
-      - require 'dijit.layout.ContentPane'  
-      - require 'dijit.layout.AccordionContainer'
-      - require 'dijit.layout.AccordionContainer'
-      - require 'dijit.layout.AccordionPane'
-    %style html,body {width:100%;height:100%;padding:0;marging:0}
+    = css '/dojo/dojox/grid/resources/tundraGrid.css'
+    = dojo :debug=>false,:root=>'dojo', :parse=>false, :auto_require=>true #:root=>'dojo/release/dojo',:build=>'mydojo',
+    = js
+    //= js_builds 'dijit/dijit','dijit/dijit-all','app/app'
+    //= js_builds 'app/app'
+    %dojo_auto_require/
   %body{:class=>'tundra'}
-    #mainContainer{:dojoType=>"dijit.layout.BorderContainer", :gutters=>"true", :style=>"height:100%"}
-      #headerContainer{:dojoType=>"dijit.layout.ContentPane", :region=>"top", :splitter=>"false"} Hello
-      #contentContainer{:dojoType=>"dijit.layout.BorderContainer", :liveSplitters=>"false", :design=>"sidebar", :region=>"center"}
-      #leftPane{:dojoType=>"dijit.layout.BorderContainer", :minSize=>"20",:style=>"width:200px;", :region=>"leading", :splitter=>"true"}
-        #navAcordionPane{:dojoType=>"dijit.layout.AccordionContainer",:region=>"center"}
-          %div{:dojoType=>"dijit.layout.AccordionPane",:title=>"Patients/Visits"}
-            .padded
-              %a{:href=>'/patients'} Patients
-          %div{:dojoType=>"dijit.layout.AccordionPane",:title=>"Labs",:selected=>"true"}
-            .padded
-              #labs Loading...
-      %div{:dojoType=>"dijit.layout.AccordionPane",:title=>"Statistics"}
-      #contentPane{:dojoType=>"dijit.layout.ContentPane", :region=>"center", :splitter=>"true"} hello
+    #mainContainer{:dojoType=>"dijit.layout.BorderContainer",:liveSplitters=>"false",:jsId=>'mainContainer',:gutters=>'false'}
+      #headerContainer{:dojoType=>"dijit.layout.ContentPane", :region=>"top"}
+        %h3 Tahoe Forest Health System
+        #logout
+          == You are logged as #{current_user.login}. |
+          =link_to 'Logout', logout_url
+      #contentContainer{:dojoType=>"dijit.layout.BorderContainer", :region=>"center",:gutters=>'false'}
+      #leftPane{:dojoType=>"dijit.layout.BorderContainer", :jsId=>'leftPane',:minSize=>"5em", :region=>"leading", :splitter=>"true",:gutters=>'false'}
+        #bage{:dojoType=>"app.views.PatientBage", :jsId=>'bage', :region=>"top"} Bage
+        #navAcordionPane{:dojoType=>"dijit.layout.AccordionContainer",:jsid=>'navAccordion',:region=>"center"}
+          #patientsNavTab{:dojoType=>"dijit.layout.ContentPane",:title=>"Patients/Visits",:selected=>"true"}= render :partial=>'shared/patient_search'
+          #patientInfoTab{:dojoType=>"dijit.layout.ContentPane",:title=>"Patient Info"}= render :partial=>'shared/patient_info'
+          #chartTab{:dojoType=>"dijit.layout.ContentPane",:title=>"Chart"}= render :partial=>'shared/chart'
+          #labResultsTab{:dojoType=>"dijit.layout.ContentPane",:title=>"Lab Results"}= render :partial=>'shared/lab_results'
+          #statisticsTab{:dojoType=>"dijit.layout.ContentPane",:title=>"Statistics"} not yet implemented
+      #contentPane{:dojoType=>"dijit.layout.StackContainer", :jsId=>'contentPane',:region=>"center", :splitter=>"true"}
+        #patientsCnt{:dojoType=>"dijit.layout.ContentPane",:jsId=>'patientsgridContainer',:gutters=>'false'}= render :partial=>'visits/index'
+        #patientInfoCnt{:dojoType=>"dijit.layout.ContentPane",:jsId=>'patientInfoCnt',:gutters=>'false'}
+        #labresultsCnt{:dojoType=>"dijit.layout.ContentPane",:jsId=>'labresultsContainer',:gutters=>'false'}= render :partial=>'lab_results/labs'
+        #chartContainer{:dojoType=>"dijit.layout.ContentPane",:jsId=>'chartContainer',:gutters=>'false'} 
+    #overlay
+      #pageLoadinSplash Loading...
