@@ -1,0 +1,57 @@
+#this configure helpers
+dojo:
+  baseUrl: http://localhost:3001
+  root: public/dojo_root
+  webroot: /dojo_root/src
+  autorequire: true
+  theme: tundra
+  aditional_css:
+    - /dojox/grid/resources/tundraGrid.css # trailing slash means from webroot
+    - logo.css #searched in app/themes/[theme]/reset.css
+  
+djConfig:
+  parseOnLoad: true
+  isDebug: true
+  locale: "'en-us'"
+
+#generators options
+generators:
+  creator: Nicola
+  client:
+    use_mvc: true
+    externalize_model: true
+    externalize_mediators: true
+    externalize_controllers: true
+    
+  dijit:
+    default_package: app.views
+    base_class: dijit._Widget
+    templated: true
+    mixins:
+      - dijit._Templated
+      - kley.mvc.MediatorMixin
+    generate_test_page: true
+    generate_css: true
+    widgets_in_template: false
+    open_in_firefox: true
+
+#version control
+vc:
+  name: svn
+  action: checkout # export - another option
+  modules:
+    dojo: http://svn.dojotoolkit.org/src/branches/1.3/dojo 
+    dijit: http://svn.dojotoolkit.org/src/branches/1.3/dijit 
+    dojox: http://svn.dojotoolkit.org/src/branches/1.3/dojox 
+    util: http://svn.dojotoolkit.org/src/branches/1.3/util 
+    ## or u can work with trunk
+    #dojo: http://svn.dojotoolkit.org/src/dojo/trunk/
+    #dijit: http://svn.dojotoolkit.org/src/dijit/trunk/
+    #dojox: http://svn.dojotoolkit.org/src/dojox/trunk/
+    #util: http://svn.dojotoolkit.org/src/util/trunk/
+
+build_opts:
+  cssOptimize: comments.keepLines
+  optimize: shrinksafe.keepLines
+  cssImportIgnore: ../dijit.css
+  internStrings: true
