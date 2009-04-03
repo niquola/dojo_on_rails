@@ -11,14 +11,14 @@ IF U HAVE SAME IDEAS LETS JOIN US
 
 == Installation
 
-* script/plugin git://github.com/niquola/dojo_on_rails.git
-  #or better go to plugins dir and git clone git://github.com/niquola/dojo_on_rails.git
-* generate file structure and copy dojo.yml to RAILS_ROOT/config
-  rake dojo:install
-* #change settings in dojo.yml or left defaults
+1. <b>script/plugin git://github.com/niquola/dojo_on_rails.git<\b>
+   #or better go to plugins dir and git clone git://github.com/niquola/dojo_on_rails.git
+1. <b>rake dojo:install<\b>
+   #generate file structure and copy dojo.yml to RAILS_ROOT/config
+1. #change settings in dojo.yml or left defaults
 
-  Example of configuration:
-  {{{
+   Example of configuration:
+   {{{
     #version control
     vc:
       defaultVc: svn
@@ -39,17 +39,14 @@ IF U HAVE SAME IDEAS LETS JOIN US
           installAction: clone
           updateAction: pull
           url: i put it in github later
-  }}}
+   }}}
 
-* #checkout dojo source code
-  #next step require the installed svn console client!
-  rake dojo:checkout 
-* #generate example OnePageApplication
-  # ie controller, action, view (in haml) and javascript with css files
-  script/generate dpage ControllerName actionName 
-* #run this controller in browser and inspect result
-  #change generated code
-  
+1. <b>rake dojo:checkout<\b> 
+   #checkout dojo source code
+   (next step require the installed svn console client!)
+1. <b>script/generate dpage ControllerName actionName<\b> 
+   #generate example OnePageApplication, ie controller, action, view (in haml) and javascript with css files
+1. #run this controller in browser and inspect result change generated code
 
 
 == Features abstract:
