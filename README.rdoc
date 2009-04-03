@@ -11,11 +11,11 @@ IF U HAVE SAME IDEAS LETS JOIN US
 
 == Installation
 
- 1  script/plugin git://github.com/niquola/dojo_on_rails.git
-    #or better go to plugins dir and git clone git://github.com/niquola/dojo_on_rails.git
- 2   rake dojo:install
-    #next step require the installed svn console client 
- 3   #change settings in dojo.yml or left defaults
+* script/plugin git://github.com/niquola/dojo_on_rails.git
+  #or better go to plugins dir and git clone git://github.com/niquola/dojo_on_rails.git
+* generate file structure and copy dojo.yml to RAILS_ROOT/config
+  rake dojo:install
+* #change settings in dojo.yml or left defaults
 
   Example of configuration:
   {{{
@@ -41,12 +41,14 @@ IF U HAVE SAME IDEAS LETS JOIN US
           url: i put it in github later
   }}}
 
- 4  rake dojo:checkout 
-    #generate example OnePageApplication
-    # ie controller, action, view (in haml) and javascript with css files
- 5  script/generate dpage ControllerName actionName 
-    #run this controller in browser and inspect result
-    #change generated code
+* #checkout dojo source code
+  #next step require the installed svn console client!
+  rake dojo:checkout 
+* #generate example OnePageApplication
+  # ie controller, action, view (in haml) and javascript with css files
+  script/generate dpage ControllerName actionName 
+* #run this controller in browser and inspect result
+  #change generated code
   
 
 
