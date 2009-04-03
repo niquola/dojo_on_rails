@@ -1,22 +1,20 @@
 #this configure helpers
 dojo:
-  baseUrl: http://localhost:3001
+  baseUrl: http://localhost:3000
   root: public/dojo_root
   webroot: /dojo_root/src
   autorequire: true
   theme: tundra
   aditional_css:
-    - /dojox/grid/resources/tundraGrid.css # trailing slash means from webroot
-    - logo.css #searched in app/themes/[theme]/reset.css
+    - common.css 
   
 djConfig:
   parseOnLoad: true
   isDebug: true
-  locale: "'en-us'"
 
 #generators options
 generators:
-  creator: Nicola
+  creator: YourName
   client:
     use_mvc: true
     externalize_model: true
@@ -44,7 +42,7 @@ vc:
     dijit: http://svn.dojotoolkit.org/src/branches/1.3/dijit 
     dojox: http://svn.dojotoolkit.org/src/branches/1.3/dojox 
     util: http://svn.dojotoolkit.org/src/branches/1.3/util 
-    ## or u can work with trunk
+    ## or u can work with  dojo trunk
     #dojo: http://svn.dojotoolkit.org/src/dojo/trunk/
     #dijit: http://svn.dojotoolkit.org/src/dijit/trunk/
     #dojox: http://svn.dojotoolkit.org/src/dojox/trunk/

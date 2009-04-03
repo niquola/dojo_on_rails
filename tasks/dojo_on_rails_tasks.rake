@@ -17,11 +17,13 @@ def build_name
 end
 
 namespace :dojo do
+  desc 'create file structure and copy dojo.yml to RAILS_ROOT/config'
   task :install do
     #run install from install rb
     install 'dojo_root'
   end
-  task :checkout_dojo do
+  desc 'checkout dojo to project from repo declared in dojo.yml'
+  task :checkout do
     #load config
     dojo_path, dojo_config= load_config 
     sc=dojo_config['vc']['name']
@@ -33,6 +35,7 @@ namespace :dojo do
       `#{sc} #{action} #{url} #{path}`
     end
   end
+  desc 'build dojo'
   task :build do
     dojo_path, dojo_config= load_config 
     Dir.chdir File.join(dojo_path,'src','util','buildscripts') 
@@ -43,9 +46,9 @@ namespace :dojo do
     puts "./build.sh profileFile=#{profile_path} releaseDir=#{release_dir} releaseName=#{build_name} #{build_options(dojo_config)} action=release"
     `./build.sh profileFile=#{profile_path} releaseDir=#{release_dir} releaseName=#{build_name} #{build_options(dojo_config)} action=release`
   end
+  desc 'remove dojo from your project'
   task :uninstall do
     `rm -r #{RAILS_ROOT}/public/dojo_root`
     `rm  #{RAILS_ROOT}/config/dojo.yml`
   end
 end
-

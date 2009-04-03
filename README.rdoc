@@ -9,6 +9,15 @@ IF U HAVE SAME IDEAS LETS JOIN US
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+== Installation
+
+  script/plugin git://github.com/niquola/dojo_on_rails.git
+  #or better go to plugins dir and git clone git://github.com/niquola/dojo_on_rails.git
+  rake dojo:install
+  #change settings in dojo.yml or left defaults
+  reke dojo:checkout 
+
+
 == Features abstract:
 
 * Some conventions and practices about Dojo-Rails project structure and management
