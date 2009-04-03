@@ -1,0 +1,31 @@
+
+!!! XML
+!!! Strict
+%html
+  %head
+    %title <%= action %>
+    =dojo :app=> '<%= action %>'
+  %body{:class=>theme}
+    #mainContainer{ :dojoType => "dijit.layout.BorderContainer"}
+      #topContainer{ :region => "top", :dojoType => "dijit.layout.ContentPane" }
+        %h1#logo Dojo On Rails
+      #leftContainer{ :region => "leading", :dojoType => "dijit.layout.AccordionContainer" }
+        #navigationContainer{ :dojoType => "dijit.layout.ContentPane", :title => "pane #1", :jsId=>'views.navigation' }
+          %ul
+            %li{:contentId=>'dojo_installation'} Add perfect dojo framework to your rails project
+            %li{:contentId=>'dojo_builds'} Automate many tasks with DojoOnRails plugin
+            %li{:contentId=>'dojo_helper'} Enjoy the rails and dojo 
+        %div{ :dojoType => "dijit.layout.ContentPane", :title => "pane #2" }
+          accordion pane #2
+        %div{ :dojoType => "dijit.layout.ContentPane", :title => "pane #3" }
+          accordion pane #3
+      #centerContainer{ :region => "center", :dojoType => "dijit.layout.TabContainer" }
+        %div{ :dojoType => "dijit.layout.ContentPane", :title => "Content Viewer" , :jsId=>'views.contentViewer'}
+          WE NEED YOUR HELP
+        %div{ :dojoType => "dijit.layout.ContentPane", :title => "tab #2" }
+          TEST IT AND SEND FEEDBACK TO US
+        %div{ :dojoType => "dijit.layout.ContentPane", :title => "tab #3" }
+          PARTICIPATE IN DEVELOPMENT
+      #trailingContainer{ :region => "trailing", :dojoType => "dijit.layout.ContentPane" , :jsId=> 'views.console'}
+        %h3 Log:
+      #bottomContainer{ :region => "bottom", :dojoType => "dijit.layout.ContentPane" } nicolA

@@ -2,6 +2,7 @@
 dojo:
   baseUrl: http://localhost:3000
   root: public/dojo_root
+  appModule: app # name of module, where generate one page applications 
   webroot: /dojo_root/src
   autorequire: true
   theme: tundra
