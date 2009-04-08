@@ -1,6 +1,6 @@
 class DijitGenerator < Rails::Generator::Base
   #include module to generate test page
-  include Dojo::Helpers
+  include Dojo::ViewHelpers
   #workaraund to force dojo helper work
   def params
     {}
