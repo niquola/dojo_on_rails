@@ -31,6 +31,7 @@ module Dojo
       %Q[<style type="text/css">
       @import "#{webroot}/dijit/themes/#{theme}/#{add_ext(theme,'css')}";
       #{additional_css}
+      @import "#{webroot}/app/themes/#{theme}/#{add_ext(theme,'css')}";
       @import "#{webroot}/app/themes/#{theme}/#{add_ext(app_name,'css')}";
       </style>]
     end
