@@ -1,4 +1,6 @@
 require 'active_support'
+require 'dojo/dojo_config'
+
 module Dojo
   class << self
     def enable

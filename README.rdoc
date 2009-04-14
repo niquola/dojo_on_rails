@@ -11,42 +11,44 @@ IF U HAVE SAME IDEAS LETS JOIN US
 
 == Installation
 
-1. <b>script/plugin git://github.com/niquola/dojo_on_rails.git<\b>
+1. script/plugin git://github.com/niquola/dojo_on_rails.git
    #or better go to plugins dir and git clone git://github.com/niquola/dojo_on_rails.git
-1. <b>rake dojo:install<\b>
-   #generate file structure and copy dojo.yml to RAILS_ROOT/config
-1. #change settings in dojo.yml or left defaults
+1. rake dojo:install:config
+   #dojo.yml to RAILS_ROOT/config
+1. #Here you can customize in dojo.yml from where to take dojo modules
+   #checkout - is shell command to load sources u can substitute it with ln -s surse target for example
+   #svn and git must be installed
+   
+   Here is example of configuration
 
-   Example of configuration:
-   {{{
-    #version control
-    vc:
-      defaultVc: svn
-      # export - another option
-      defaultInstallAction: checkout 
-      defaultUpdateAction: checkout 
-      modules:
-        dojo:
-          url: http://svn.dojotoolkit.org/src/branches/1.3/dojo 
-        dijit:
-          url: http://svn.dojotoolkit.org/src/branches/1.3/dijit 
-        dojox:
-          url: http://svn.dojotoolkit.org/src/branches/1.3/dojox 
-        util:
-          url: http://svn.dojotoolkit.org/src/branches/1.3/util 
-        kley:
-          vc: git
-          installAction: clone
-          updateAction: pull
-          url: i put it in github later
-   }}}
+    modules:
+      dojo:
+        checkout: svn checkout http://svn.dojotoolkit.org/src/branches/1.3/dojo
+      dijit:
+        checkout: svn checkout http://svn.dojotoolkit.org/src/branches/1.3/dijit 
+     dojox:
+        checkout: svn checkout http://svn.dojotoolkit.org/src/branches/1.3/dojox 
+      kley:
+        checkout: git clone git@github.com:niquola/kley.git
+      util:
+        checkout: svn checkout http://svn.dojotoolkit.org/src/branches/1.3/util 
 
-1. <b>rake dojo:checkout<\b> 
-   #checkout dojo source code
-   (next step require the installed svn console client!)
-1. <b>script/generate dpage ControllerName actionName<\b> 
-   #generate example OnePageApplication, ie controller, action, view (in haml) and javascript with css files
-1. #run this controller in browser and inspect result change generated code
+1. rake dojo:install:modules
+   #this checkout dojo source code
+1. then you configure application settings
+
+   From dojo.yml:
+
+    #name of dojo module, where your OnePageApplications will live
+    application_module: app
+    #controller file name, which actions mapped to one page applications
+    controller: <your-controller>
+
+1. script/generate controller <your-controller>
+   #Generate controller for OnePageApplications    
+1. script/generate dpage OnePageApplicationName1 OnePageApplicationName2 
+   #generate  OnePageApplications skeletons 
+1. #run this controller 
 
 
 == Features abstract:
@@ -60,14 +62,14 @@ IF U HAVE SAME IDEAS LETS JOIN US
 * Smart DojoHelper
   * configured through dojo.yml 
   * use builds or sources 
-  * Autorequire feature automatically dojo.require(WidgetsOnYourPage) - provided by helper)
+  * Autorequire option automatically dojo.require(WidgetsOnYourPage)
 
 
 == Conventions:
 
 Here the directory structure:
 
-  rails_root
+  RAILS_ROOT
    |-app
    | |-controllers
    | |-models
@@ -76,13 +78,13 @@ Here the directory structure:
    |-config
    |  \-dojo.yml <------------------- all configurations centralized
    \-public
-     \-dojo_root
+     \-client_root <------------configured in dojo.yml, by default ria
         |-profiles
-        |  \-standard.profile.js <-- Profile to build project / will be automatically updated by generators 
+        |  \-profile.js <-- Profile to build project / TODO: will be automatically updated by generators 
         |
         |-src <--------------------- The sources. Modules checkouted as described in dojo.yaml
         |  |-app
-        |  |-dmvc
+        |  |-kley <----------------- Lightweight mvc framework
         |  |-dojo
         |  |-dijit
         |  |-dojox
@@ -91,7 +93,7 @@ Here the directory structure:
         \-builds <--------------Builds folder, the place where dojo:build rake put builds
           |-build_2009_01_02_12_33 <--- Concrete build, to which u can switch application by dojo.yml config or directly in dojo helper 
           |  |-app
-          |  |-dmvc
+          |  |-kley
           |  |-dojo
           |  |-dijit
           |  |-dojox
@@ -112,11 +114,14 @@ Here our vision of custom application package
     |  |-nihilo
     |  \-tundra
     |      |-AppLayoutApplicationContainer.css <--- custom widgets css
-    |      |-override_dijit_theme.css <--- theme overrides css
+    |      |-override_theme.css <--- place to put css overriding theme
     |      |-reset.css
-    |      |-tundra.css <--- Import all css files excluding OnePageApplication css
-    |      |-page1.css <---- OnePageApplication css
-    |      \-page2.css <---- OnePageApplication css
+    |      |-custom.css <--------- common.css imported by all pageX.css by default
+    |      |-widgets-all.css <--- Import all stylesheets for custom Widgets 
+    |      |-page1.css <---- entry point to your stylesheets dependencies for this OnePageApplication
+    |      |                 @import all required stylesheets 
+    |      |                 example: @import url(../../../dojox/grid/tundraGrid.css) 
+    |      \-page2.css <---- Another one
     |-tests
     |   \-AppLayoutViewsContainer.html <--- test generated by DijitGenerator or manually created
     | 
@@ -126,8 +131,54 @@ Here our vision of custom application package
        \-page2 <--- parts of page2 module
          |-controllers.js
          |-mediators.js
+         |-autorequire.js <---- this file require Widgets from autorequire
+         |                      we need it to resolve all dependencies when run dojo:building 
+         |                      now your need manually copy autorequirs from your page
+         |                      TODO: will be updated by dojo:build rake soon
          \-models.js
+== Build
+    run dojo:build first time it will create client_root/profiles/profile.js
+    edit profile (read more on dojo help)
+    
+1.  For example if we gonna build OnePageApplication to one file we need
+    open this application in browser and copy autorequired dojo.require to:
 
+    client_root
+     |
+     app
+      \-pages
+         |-OnePageApplicationName1.js
+         \-OnePageApplicationName1 <--- parts of page2 module
+           |
+           |-autorequire.js <---- HERE 
+          ...
+    
+1.  then edit profile.js and add to layers array
+
+      {
+          name: "../app/pages/OnePageApplicationName1.js",
+          dependencies: ["app.pages.OnePageApplicationName1"]
+      }
+    
+1.  app/pages/OnePageApplicationName1.js now require all graph of Classes
+
+1.  rake dojo:build
+
+1.  change in dojo.yml version of js to use build path 
+
+      development:
+        <<: *defaults
+        #configure helper
+        dojo:
+          version: builds/buildXXXX-XX-XX <--------- your build
+          djConfig:
+            parseOnLoad: true
+            isDebug: true
+          autorequire: false <------------ turn off autorequire 
+          theme: tundra
+1.  restart server
+
+ 
 == DojoHelper
 
 Do many things:
@@ -198,8 +249,6 @@ Options:
 Example: script/generate dijit .layout.AppContainer MP dijit.layout._ContainerWidget  .layout._ContainerMixin  kley.mvc.MediatorMixin
 
 == KleyMvc
-UNDER DEVELOPMENT - have ideas?
-Simple mvc over dojo.publish/notify - inspired by PureMvc, but even more simple (one file about 100 lines)
-
+Lightweight publish/subscribe/mvc framework (on top of dojo) inspired by pureMVC - git://github.com/niquola/kley.git 
 
 Copyright (c) 2009 [niquola], released under the MIT license

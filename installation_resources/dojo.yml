@@ -1,56 +1,81 @@
-#this configure helpers
-dojo:
+#this common settings can be overriden for concrete environment
+defaults: &defaults
+  #the root of your client project
+  root: public/ria
+  #url where root is visible
+  webroot: /ria
+  #used in some tasks
+  #TODO document usage
   baseUrl: http://localhost:3000
-  root: public/dojo_root
-  appModule: app # name of module, where generate one page applications 
-  webroot: /dojo_root/src
-  autorequire: true
-  theme: tundra
-  aditional_css:
-    - common.css 
-  
-djConfig:
-  parseOnLoad: true
-  isDebug: true
-
-#generators options
-generators:
-  creator: YourName
-  client:
-    use_mvc: true
-    externalize_model: true
-    externalize_mediators: true
-    externalize_controllers: true
-    
-  dijit:
-    default_package: app.views
-    base_class: dijit._Widget
-    templated: true
-    mixins:
-      - dijit._Templated
-      - kley.mvc.MediatorMixin
-    generate_test_page: true
-    generate_css: true
-    widgets_in_template: false
-    open_in_firefox: true
-
-#version control
-vc:
-  name: svn
-  action: checkout # export - another option
+  #the name of dojo module where are living your applications
+  #used in dpage generator
+  application_module: app
+  #controller file name, which actions mapped to one page applications
+  controller: index
+  #where and how to get modules
   modules:
-    dojo: http://svn.dojotoolkit.org/src/branches/1.3/dojo 
-    dijit: http://svn.dojotoolkit.org/src/branches/1.3/dijit 
-    dojox: http://svn.dojotoolkit.org/src/branches/1.3/dojox 
-    util: http://svn.dojotoolkit.org/src/branches/1.3/util 
-    ## or u can work with  dojo trunk
-    #dojo: http://svn.dojotoolkit.org/src/dojo/trunk/
-    #dijit: http://svn.dojotoolkit.org/src/dijit/trunk/
-    #dojox: http://svn.dojotoolkit.org/src/dojox/trunk/
-    #util: http://svn.dojotoolkit.org/src/util/trunk/
+    dojo:
+      checkout: svn checkout http://svn.dojotoolkit.org/src/branches/1.3/dojo
+    dijit:
+      checkout: svn checkout http://svn.dojotoolkit.org/src/branches/1.3/dijit 
+    dojox:
+      checkout: svn checkout http://svn.dojotoolkit.org/src/branches/1.3/dojox 
+    kley:
+      checkout: git clone git@github.com:niquola/kley.git
+    util:
+      checkout: svn checkout http://svn.dojotoolkit.org/src/branches/1.3/util 
+  #profile name to build application
+  profile: profiles/profile.js
+  release_dir: builds
+  #build options for dojo build system
+  build_options:
+    cssOptimize: comments.keepLines
+    optimize: shrinksafe.keepLines
+    cssImportIgnore: ../dijit.css
+    internStrings: true
+  #configure helper
+  dojo:
+    version: src
+    djConfig:
+      parseOnLoad: true
+      isDebug: true
+    autorequire: true
+    theme: tundra
+    aditional_css:
+      - common.css 
+  #generators options
+  generators:
+    author: Your Name
+    dijit:
+      default_package: app.views
+      base_class: dijit._Widget
+      templated: true
+      mixins:
+        - dijit._Templated
+        - kley.mvc.MediatorMixin
+      generate_test_page: true
+      generate_css: true
+      widgets_in_template: false
+      open_in_firefox: true
+development:
+  <<: *defaults
+  #configure helper
+  dojo:
+    version: src
+    djConfig:
+      parseOnLoad: true
+      isDebug: true
+    autorequire: true
+    theme: tundra
+production:
+  <<: *defaults
+  #configure helper
+  dojo:
+    version: last_build
+    djConfig:
+      parseOnLoad: true
+      isDebug: false
+    autorequire: false
+    theme: tundra
 
-build_opts:
-  cssOptimize: comments.keepLines
-  optimize: shrinksafe.keepLines
-  cssImportIgnore: ../dijit.css
-  internStrings: true
+

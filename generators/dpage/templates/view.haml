@@ -10,11 +10,8 @@
       #topContainer{ :region => "top", :dojoType => "dijit.layout.ContentPane" }
         %h1#logo Dojo On Rails
       #leftContainer{ :region => "leading", :dojoType => "dijit.layout.AccordionContainer" }
-        #navigationContainer{ :dojoType => "dijit.layout.ContentPane", :title => "pane #1", :jsId=>'views.navigation' }
-          %ul
-            %li{:contentId=>'dojo_installation'} Add perfect dojo framework to your rails project
-            %li{:contentId=>'dojo_builds'} Automate many tasks with DojoOnRails plugin
-            %li{:contentId=>'dojo_helper'} Enjoy the rails and dojo 
+        %div{ :dojoType => "dijit.layout.ContentPane", :title => "pane #1" }
+          accordion pane #1
         %div{ :dojoType => "dijit.layout.ContentPane", :title => "pane #2" }
           accordion pane #2
         %div{ :dojoType => "dijit.layout.ContentPane", :title => "pane #3" }

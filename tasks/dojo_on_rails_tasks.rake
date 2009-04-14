@@ -1,54 +1,65 @@
-require  File.join(File.dirname(__FILE__) , '../install.rb')
-
-
-def load_config
-  dojo_config=YAML.load_file(File.join(RAILS_ROOT,'config','dojo.yml'))
-  dojo_path=File.join(RAILS_ROOT,dojo_config['dojo']['root'])
-  dojo_path||=File.join(RAILS_ROOT,'public','dojo_root')
-  return [dojo_path,dojo_config]
-end
-
-def build_options(config)
-  config['build_opts'].map { |key, val| "#{key}=#{val}"}.join ' '
-end
-
-def build_name
- 'build_'+Date.today.to_s.gsub(/[\/-]/,'_')
-end
+require 'fileutils' 
 
 namespace :dojo do
-  desc 'create file structure and copy dojo.yml to RAILS_ROOT/config'
-  task :install do
-    #run install from install rb
-    install 'dojo_root'
-  end
-  desc 'checkout dojo to project from repo declared in dojo.yml'
-  task :checkout do
-    #load config
-    dojo_path, dojo_config= load_config 
-    sc=dojo_config['vc']['name']
-    action=dojo_config['vc']['action']
-    #install modules
-    dojo_config['vc']['modules'].each do |name,url|
-      path=File.join dojo_path,'src',name
-      puts "Execute: #{sc} #{action} #{url} #{path} - it could take some time - wait"
-      `#{sc} #{action} #{url} #{path}`
+  namespace :install do
+    desc 'copy dojo.yml to RAILS_ROOT/config'
+    task :config do
+      src_file = File.join(File.dirname(__FILE__) ,'../installation_resources','dojo.yml')
+      dest_file = File.join(RAILS_ROOT,'config','dojo.yml')
+      if File.exists? dest_file
+        puts "File #{dest_file} already exist. Override (y/n) ?"
+        agree=STDIN.gets.chomp
+      end
+      if agree.nil? || agree=='y'
+        FileUtils.cp(src_file, dest_file)
+        puts "dojo.yml was copied to RAILS_ROOT/config dir. Change defaults and run rake dojo:install:modules"
+      end
+    end
+    desc 'checkout dojo modules sources'
+    task :modules=>[:config,:environment] do
+      dir=File.join(DojoConfig.root,'src')
+      FileUtils.mkdir_p(dir) unless File.exists? dir
+      Dir.chdir dir 
+      DojoConfig.modules.each do |mod, opts|
+        cmd=opts['checkout']
+        unless cmd.nil? || cmd.empty? 
+          puts "Run #{cmd}" 
+          system cmd
+        end
+      end
+    end
+    desc 'copy default application files'
+    task :app do
+      src_file = File.join(File.dirname(__FILE__) ,'../installation_resources','dojo.yml')
+      dest_file = File.join(RAILS_ROOT,'config','dojo.yml')
+      if File.exists? dest_file
+        puts "File #{dest_file} already exist. Override (y/n) ?"
+        agree=STDIN.gets.chomp
+      end
+      if agree.nil? || agree=='y'
+        FileUtils.cp(src_file, dest_file)
+        puts "dojo.yml was copied to RAILS_ROOT/config dir. Change defaults and run rake dojo:install:modules"
+      end
     end
   end
   desc 'build dojo'
-  task :build do
-    dojo_path, dojo_config= load_config 
-    Dir.chdir File.join(dojo_path,'src','util','buildscripts') 
-    profile_path=File.join(dojo_path,'profiles','standard.profile.js')
-    release_dir=File.join(dojo_path,'builds')
-
-    puts "Start building to #{release_dir}. It can take sevrak minutes. Wait. :("
-    puts "./build.sh profileFile=#{profile_path} releaseDir=#{release_dir} releaseName=#{build_name} #{build_options(dojo_config)} action=release"
-    `./build.sh profileFile=#{profile_path} releaseDir=#{release_dir} releaseName=#{build_name} #{build_options(dojo_config)} action=release`
-  end
-  desc 'remove dojo from your project'
-  task :uninstall do
-    `rm -r #{RAILS_ROOT}/public/dojo_root`
-    `rm  #{RAILS_ROOT}/config/dojo.yml`
+  task :build => :environment do
+    profile_file = File.join(RAILS_ROOT,DojoConfig.root,DojoConfig.profile)
+    p profile_file
+    unless File.exists? profile_file
+      puts "Profile file #{profile_file} not exists? Copy default."
+      def_profile_file = File.join(File.dirname(__FILE__) ,'../installation_resources','profile.js')
+      FileUtils.mkdir_p(File.dirname(profile_file))
+      FileUtils.cp(def_profile_file,profile_file);
+    end
+    Dir.chdir File.join(RAILS_ROOT,DojoConfig.root,'src','util','buildscripts') 
+    release_dir=File.join(RAILS_ROOT,DojoConfig.root,DojoConfig.release_dir)
+    FileUtils.mkdir_p(release_dir) unless File.exists? release_dir
+    options=DojoConfig.build_options.map { |key, val| "#{key}=#{val}"}.join ' '
+    build_name='build_'+DateTime.now.to_s.gsub(/[^A-Za-z0-9_]/, '_')
+    puts "Start building to #{release_dir}/#{build_name}." 
+    cmd= "./build.sh profileFile=#{profile_file} releaseDir=#{release_dir} releaseName=#{build_name} #{options} action=release"
+    p cmd
+    system cmd
   end
 end

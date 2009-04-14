@@ -1,44 +1,6 @@
 @import 'common.css';
-#mainContainer{
-  width:100%;
-  height:100%;
-}
-#topContainer{
-  padding: 0;
-}
-#logo{
- padding:10px;
- font-size:2em;
-}
-#topContainer .header{
-}
-#leftContainer{
-  width: 300px;
-  padding:0;
-}
-#leftContainer ul li{
-  color:#050;
-  display:block;
-  padding:10px;
-  border-bottom:1px dotted #aaa;
-  cursor:pointer;
-}
-#leftContainer ul li:hover{
-  background-color: #ffe;
-}
-#leftContainer ul li.selected{
-  background-color: #eef;
-}
-#centerContainer{
-  background-color:white ;
-}
-#trailingContainer{
-  width: 200px;
-  overflow-y:auto;
-  font-size:0.5em;
-}
-#trailingContainer h3{
-  border-bottom:1px solid #aaa;
-}
-#bottomConainer{
-}
+/**
+ * import here files specific for this page
+ * @import url('../../../dojox/grid/themes/tundraGrid.js');
+ ** /
+

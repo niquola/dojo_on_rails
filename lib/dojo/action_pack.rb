@@ -1,27 +1,19 @@
 module Dojo
   module ViewHelpers
-    DEFAULT_ADDITIONAL_CSS=['reset','override_dijit_theme']
+    AUTOREQUIRE_TAG="<dojo_auto_require />"
     def djConf
-      DojoConfig['djConfig'].map {|key,val| "#{key}: #{val}"}.join ','
+      DojoConfig.dojo.djConfig.map {|key,val| "#{key}: #{val}"}.join ','
     end
     def autorequire
-      if DojoConfig['dojo']['autorequire']==true 
+      if DojoConfig.dojo.autorequire==true 
         params[:dojo_auto_require]=true
-       "<dojo_auto_require />"
+        AUTOREQUIRE_TAG
       else
        ''
       end
     end
     def webroot
-      webroot=DojoConfig['dojo']['webroot']
-    end
-    def additional_css
-      csss=(DEFAULT_ADDITIONAL_CSS + DojoConfig['dojo']['aditional_css']).uniq
-      imports=csss.map do |css|
-        css=add_ext css, 'css'
-        ( css =~ /^\// ) ? %Q[@import "#{webroot}#{css}";] : %Q[ @import "#{webroot}/app/themes/#{theme}/#{css}";]
-      end  
-      imports.join "\n"
+      "#{DojoConfig.webroot}/#{DojoConfig.dojo.version}"
     end
     #check if ext presented and add if not
     def add_ext(str,ext)
@@ -30,8 +22,7 @@ module Dojo
     def css(app_name)
       %Q[<style type="text/css">
       @import "#{webroot}/dijit/themes/#{theme}/#{add_ext(theme,'css')}";
-      #{additional_css}
-      @import "#{webroot}/app/themes/#{theme}/#{add_ext(theme,'css')}";
+      @import "#{webroot}/app/themes/#{theme}/widgets-all.css";
       @import "#{webroot}/app/themes/#{theme}/#{add_ext(app_name,'css')}";
       </style>]
     end
@@ -45,7 +36,7 @@ module Dojo
       ]
     end
     def theme
-      DojoConfig['dojo']['theme']
+      DojoConfig.dojo.theme
     end 
     def app_js(name)
       app_path="#{webroot}/app/pages/#{name}"

@@ -42,7 +42,7 @@ class DijitGenerator < Rails::Generator::Base
     (val.nil? )?  default_value : val
   end
   def parse_config
-    cfg=DojoConfig['generators']['dijit'] 
+    cfg=DojoConfig.generators.dijit 
     @default_package=ifnil?(cfg['default_package'], 'app.views')
     @base_class=ifnil?(cfg['base_class'] , 'dijit._Widget')
     @templated=ifnil?(cfg['templated'],true)
@@ -118,10 +118,10 @@ class DijitGenerator < Rails::Generator::Base
       @no_dots_name=packages.inject(''){|name,pak| name + pak.capitalize} + @class_name 
 
       #construct pathes
-      @package_path = packages.inject(File.join(DojoConfig['dojo']['root'],'src')){|path,pak| File.join(path,pak)} 
-      @root_package_path = File.join(DojoConfig['dojo']['root'],'src',packages[0])
+      @package_path = packages.inject(File.join(DojoConfig.root,'src')){|path,pak| File.join(path,pak)} 
+      @root_package_path = File.join(DojoConfig.root,'src',packages[0])
       @template_path=File.join(@package_path,'templates')
-      @css_path=File.join(@root_package_path,'themes',DojoConfig['dojo']['theme'])
+      @css_path=File.join(@root_package_path,'themes',DojoConfig.dojo.theme)
       @test_path=File.join(@root_package_path,'tests')
 
       # create all dir if not exists
@@ -134,7 +134,7 @@ class DijitGenerator < Rails::Generator::Base
         :package_name=>@package_name,
         :no_dots_name=>@no_dots_name,
         :class_name=>@class_name,
-        :creator=>DojoConfig['generators']['creator'],
+        :creator=>DojoConfig.generators.author,
         :mixins=>@mixins,
         :base_class=>@base_class,
         :is_templated=>@templated,
@@ -146,7 +146,7 @@ class DijitGenerator < Rails::Generator::Base
       m.template "dijit.css", File.join(@css_path, "#{@no_dots_name}.css"), :assigns=>assigns if @generate_css 
       m.template "test.html", File.join(@test_path,"#{@no_dots_name}.html"),:assigns=>assigns if @generate_test_page
 
-      test_url= "#{DojoConfig['dojo']['baseUrl']}#{@test_path.gsub(/^public/,'')}/#{@no_dots_name}.html"
+      test_url= "#{DojoConfig.baseUrl}#{@test_path.gsub(/^public/,'')}/#{@no_dots_name}.html"
       puts "Open firefox to inspect test page #{test_url}"
       #TODO open firefox only on creation - not when destroy
       `firefox --new-tab #{test_url} &`  if @open_in_firefox
