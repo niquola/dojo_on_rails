@@ -1,6 +1,6 @@
 module Dojo
+  AUTOREQUIRE_TAG="<dojo_auto_require />"
   module ViewHelpers
-    AUTOREQUIRE_TAG="<dojo_auto_require />"
     def djConf
       DojoConfig.dojo.djConfig.map {|key,val| "#{key}: #{val}"}.join ','
     end
@@ -20,16 +20,12 @@ module Dojo
       ( str.strip=~/\.#{ext}$/ ) ? str.strip : "#{str.strip}.#{ext}"
     end
     def css(app_name)
-      %Q[<style type="text/css">
-      @import "#{webroot}/dijit/themes/#{theme}/#{add_ext(theme,'css')}";
-      @import "#{webroot}/app/themes/#{theme}/widgets-all.css";
-      @import "#{webroot}/app/themes/#{theme}/#{add_ext(app_name,'css')}";
-      </style>]
+      # http://www.webcredible.co.uk/user-friendly-resources/css/internet-explorer.shtml - we need use link not import
+      %Q[<link rel="stylesheet" href="#{webroot}/app/themes/#{theme}/#{add_ext(app_name,'css')}" type="text/css" />]
     end
     def dojo(opts)
       %Q[
-        <script type="text/javascript" src="#{webroot}/dojo/dojo.js" djConfig="#{djConf}">
-        </script>
+      <script type="text/javascript" src="#{webroot}/dojo/dojo.js" djConfig="#{djConf}"> </script>
       #{autorequire}
       #{css opts[:app]}
       #{app_js opts[:app]}
@@ -40,10 +36,7 @@ module Dojo
     end 
     def app_js(name)
       app_path="#{webroot}/app/pages/#{name}"
-      %Q[
-        <script type="text/javascript" src="#{app_path}.js">
-        </script>
-      ]
+      %Q[<script type="text/javascript" src="#{app_path}.js"></script>]
     end
   end
   module AutoRequire
@@ -58,7 +51,7 @@ module Dojo
       body=self.response.body
       p body.scan(COMP_REGEXP)
       requires= body.scan(COMP_REGEXP).map{|m| %Q[dojo.require("#{m[0]}");]}.uniq.join("\n")
-      self.response.body=body.gsub('<dojo_auto_require />',"\n<script>#{requires}\n</script>")
+      self.response.body=body.gsub(AUTOREQUIRE_TAG,"\n<script>#{requires}\n</script>")
     end
 
     module ClassMethods

@@ -1,4 +1,5 @@
 @import url(reset.css);
+@import url(../../../dijit/themes/tundra/tundra.css);
 html,body,#mainContainer{
  width:100%;
  height:100%;

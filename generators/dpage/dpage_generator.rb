@@ -19,11 +19,13 @@ class DpageGenerator < Rails::Generator::Base
       m.directory css_path 
 
       #check defaults css and copy them if not exists
-      unless File.exists? File.join(RAILS_ROOT,css_path)
+      #TODO uncomment when ready for release
+      #but now this files will be changed during development
+      #unless File.exists? File.join(RAILS_ROOT,css_path)
         ['common','theme_override','reset','all'].each do |css| 
           m.template "default_stylesheets/#{css}.css", File.join(css_path,"#{css}.css")
         end
-      end
+      #end
       app_prefix="#{DojoConfig.application_module}.pages"
       # View template for each action.
       args.each do |action|
