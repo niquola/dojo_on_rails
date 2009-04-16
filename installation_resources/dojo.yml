@@ -41,8 +41,6 @@ defaults: &defaults
       isDebug: true
     autorequire: true
     theme: tundra
-    aditional_css:
-      - common.css 
   #generators options
   generators:
     author: Your Name
@@ -52,7 +50,6 @@ defaults: &defaults
       templated: true
       mixins:
         - dijit._Templated
-        - kley.mvc.MediatorMixin
       generate_test_page: true
       generate_css: true
       widgets_in_template: false

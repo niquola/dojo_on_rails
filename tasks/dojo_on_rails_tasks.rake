@@ -6,13 +6,11 @@ namespace :dojo do
     task :config do
       src_file = File.join(File.dirname(__FILE__) ,'../installation_resources','dojo.yml')
       dest_file = File.join(RAILS_ROOT,'config','dojo.yml')
-      if File.exists? dest_file
-        puts "File #{dest_file} already exist. Override (y/n) ?"
-        agree=STDIN.gets.chomp
-      end
-      if agree.nil? || agree=='y'
+      unless File.exists? dest_file
         FileUtils.cp(src_file, dest_file)
         puts "dojo.yml was copied to RAILS_ROOT/config dir. Change defaults and run rake dojo:install:modules"
+      else
+        puts "dojo.yml already installed"
       end
     end
     desc 'checkout dojo modules sources'

@@ -121,7 +121,7 @@ class DijitGenerator < Rails::Generator::Base
       @package_path = packages.inject(File.join(DojoConfig.root,'src')){|path,pak| File.join(path,pak)} 
       @root_package_path = File.join(DojoConfig.root,'src',packages[0])
       @template_path=File.join(@package_path,'templates')
-      @css_path=File.join(@root_package_path,'themes',DojoConfig.dojo.theme)
+      @css_path=File.join(@root_package_path,'themes',DojoConfig.dojo.theme,'views')
       @test_path=File.join(@root_package_path,'tests')
 
       # create all dir if not exists

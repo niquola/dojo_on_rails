@@ -1,4 +1,4 @@
-@import 'common.css';
+@import url(common.css);
 /**
  * import here files specific for this page
  * @import url('../../../dojox/grid/themes/tundraGrid.js');
