@@ -40,6 +40,12 @@ namespace :dojo do
       end
     end
   end
+  desc 'collect autorequire'
+  task :autorequire => :environment do
+    pages_path=File.join(RAILS_ROOT, DojoConfig.root,'src',DojoConfig.application_module,'pages');
+    puts pages_path
+    p Dir["#{pages_path}/*.js"]
+  end
   desc 'build dojo'
   task :build => :environment do
     profile_file = File.join(RAILS_ROOT,DojoConfig.root,DojoConfig.profile)
