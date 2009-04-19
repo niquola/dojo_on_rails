@@ -42,9 +42,13 @@ namespace :dojo do
   end
   desc 'collect autorequire'
   task :autorequire => :environment do
+    require 'action_controller/integration'
     pages_path=File.join(RAILS_ROOT, DojoConfig.root,'src',DojoConfig.application_module,'pages');
     puts pages_path
     p Dir["#{pages_path}/*.js"]
+    app = ActionController::Integration::Session.new;
+    app.get('/index')
+    puts app.html_document.root.to_s
   end
   desc 'build dojo'
   task :build => :environment do
