@@ -13,7 +13,12 @@ module Dojo
       end
     end
     def webroot
-      "#{DojoConfig.webroot}/#{DojoConfig.dojo.version}"
+      if DojoConfig.dojo.version=='last_build'
+        build_dir = File.basename(Dir[File.join(RAILS_ROOT,DojoConfig.root,'builds','*')].max)
+        return "#{DojoConfig.webroot}/builds/#{build_dir}"
+      else
+        return "#{DojoConfig.webroot}/#{DojoConfig.dojo.version}"
+      end
     end
     #check if ext presented and add if not
     def add_ext(str,ext)

@@ -47,13 +47,12 @@ namespace :dojo do
     puts pages_path
     p Dir["#{pages_path}/*.js"]
     app = ActionController::Integration::Session.new;
-    app.get('/index')
+    app.get('/index/chart')
     puts app.html_document.root.to_s
   end
   desc 'build dojo'
   task :build => :environment do
     profile_file = File.join(RAILS_ROOT,DojoConfig.root,DojoConfig.profile)
-    p profile_file
     unless File.exists? profile_file
       puts "Profile file #{profile_file} not exists? Copy default."
       def_profile_file = File.join(File.dirname(__FILE__) ,'../installation_resources','profile.js')
