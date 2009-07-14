@@ -17,17 +17,20 @@ namespace :dojo do
     task :modules=>[:config,:environment] do
       dir=File.join(DojoConfig.root,'src')
       
-      if File.exists? dir
-        mode = 'update'
-      else
+      unless File.exists? dir
         FileUtils.mkdir_p(dir)
-       mode = 'checkout'
       end
 
       Dir.chdir dir 
       DojoConfig.modules.each do |mod, opts|
+        if File.exists? File.join(RAILS_ROOT, DojoConfig.root, 'src', mod)
+          mode = 'update'
+          Dir.chdir(File.join(RAILS_ROOT, DojoConfig.root, 'src', mod))
+        else
+          mode = 'checkout'
+          Dir.chdir(File.join(RAILS_ROOT, DojoConfig.root, 'src'))
+        end
         cmd=opts[mode]
-        Dir.chdir(File.join(RAILS_ROOT, DojoConfig.root, 'src', mod)) if mode == 'update'
         unless cmd.nil? || cmd.empty? 
           puts "Run #{cmd}" 
           system cmd
