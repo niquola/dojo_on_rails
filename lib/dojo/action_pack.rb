@@ -33,6 +33,8 @@ module Dojo
         <script type="text/javascript" src="#{webroot}/dojo/dojo.js" djConfig="#{djConf}">
         </script>
         #{autorequire}
+        #{css opts[:app]}
+        #{app_js opts[:app]}
         <script type="text/javascript">
         if (dijit._Widget) {
           dojo.extend(dijit._Widget, {
@@ -41,8 +43,6 @@ module Dojo
           dijit._Widget.prototype.attributeMap.viewid = "";
         }
         </script>
-        #{css opts[:app]}
-        #{app_js opts[:app]}
       ]
     end
     def theme
