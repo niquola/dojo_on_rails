@@ -33,6 +33,14 @@ module Dojo
         <script type="text/javascript" src="#{webroot}/dojo/dojo.js" djConfig="#{djConf}">
         </script>
         #{autorequire}
+        <script type="text/javascript">
+        if (dijit._Widget) {
+          dojo.extend(dijit._Widget, {
+            viewid: ""
+          });
+          dijit._Widget.prototype.attributeMap.viewid = "";
+        }
+        </script>
         #{css opts[:app]}
         #{app_js opts[:app]}
       ]
