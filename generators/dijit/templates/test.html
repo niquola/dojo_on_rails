@@ -4,11 +4,8 @@
   <head>
     <title>Test <%= class_name %></title>
     <%= dojo_helper_content %>
-    <script>
-      dojo.require("<%= full_name %>");
-      dojo.addOnLoad(function(){
-      });
-    </script>
+    <link rel="stylesheet" href="<%= css_path %>" type="text/css" />
+    <script src="<%= class_name %>.js"></script>
   </head>
   <body class='tundra'>
     <div dojoType="<%= full_name %>" jsId="<%= class_name.downcase %>"></div>

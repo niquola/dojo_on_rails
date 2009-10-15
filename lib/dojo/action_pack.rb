@@ -12,10 +12,12 @@ module Dojo
        ''
       end
     end
+    def last_build_dir
+        File.basename(Dir[File.join(RAILS_ROOT,DojoConfig.root,'builds','*')].max)
+    end
     def webroot
       if DojoConfig.dojo.version=='last_build'
-        build_dir = File.basename(Dir[File.join(RAILS_ROOT,DojoConfig.root,'builds','*')].max)
-        return "#{DojoConfig.webroot}/builds/#{build_dir}"
+        return "#{DojoConfig.webroot}/builds/#{last_build_dir}"
       else
         return "#{DojoConfig.webroot}/#{DojoConfig.dojo.version}"
       end
@@ -31,10 +33,25 @@ module Dojo
     def dojo(opts)
       %Q[
       <script type="text/javascript" src="#{webroot}/dojo/dojo.js" djConfig="#{djConf}"> </script>
+      #{opts[:dijit_from_build].nil? ? '' : dijit_all(opts[:dijit_from_build])}
       #{autorequire}
       #{css opts[:app]}
       #{app_js opts[:app]}
       ]
+    end
+    #TODO: do it in a more clean way
+    def dijit_all(modules)
+      %Q[<script>
+       dojo.registerModulePath('dijit',
+       '#{DojoConfig.webroot}/builds/#{last_build_dir}/dijit');
+       dojo.registerModulePath('dojo',
+       '#{DojoConfig.webroot}/builds/#{last_build_dir}/dojo');
+       dojo.registerModulePath('dojox',
+       '#{DojoConfig.webroot}/builds/#{last_build_dir}/dojox');
+       dojo.registerModulePath('debug',
+       '#{DojoConfig.webroot}/builds/#{last_build_dir}/debug');
+       #{modules.map{|m| "dojo.require('#{m}');"}.join("\n")}
+      </script>]
     end
     def theme
       DojoConfig.dojo.theme
