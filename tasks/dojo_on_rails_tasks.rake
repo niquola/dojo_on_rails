@@ -16,10 +16,21 @@ namespace :dojo do
     desc 'checkout dojo modules sources'
     task :modules=>[:config,:environment] do
       dir=File.join(DojoConfig.root,'src')
-      FileUtils.mkdir_p(dir) unless File.exists? dir
+      
+      unless File.exists? dir
+        FileUtils.mkdir_p(dir)
+      end
+
       Dir.chdir dir 
       DojoConfig.modules.each do |mod, opts|
-        cmd=opts['checkout']
+        if File.exists? File.join(RAILS_ROOT, DojoConfig.root, 'src', mod)
+          mode = 'update'
+          Dir.chdir(File.join(RAILS_ROOT, DojoConfig.root, 'src', mod))
+        else
+          mode = 'checkout'
+          Dir.chdir(File.join(RAILS_ROOT, DojoConfig.root, 'src'))
+        end
+        cmd=opts[mode]
         unless cmd.nil? || cmd.empty? 
           puts "Run #{cmd}" 
           system cmd

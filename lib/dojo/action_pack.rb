@@ -5,11 +5,11 @@ module Dojo
       DojoConfig.dojo.djConfig.map {|key,val| "#{key}: #{val}"}.join ','
     end
     def autorequire
-      if DojoConfig.dojo.autorequire==true 
+      if DojoConfig.dojo.autorequire==true
         params[:dojo_auto_require]=true
         AUTOREQUIRE_TAG
       else
-       ''
+        ''
       end
     end
     def last_build_dir
@@ -32,11 +32,19 @@ module Dojo
     end
     def dojo(opts)
       %Q[
-      <script type="text/javascript" src="#{webroot}/dojo/dojo.js" djConfig="#{djConf}"> </script>
-      #{opts[:dijit_from_build].nil? ? '' : dijit_all(opts[:dijit_from_build])}
-      #{autorequire}
-      #{css opts[:app]}
-      #{app_js opts[:app]}
+        <script type="text/javascript" src="#{webroot}/dojo/dojo.js" djConfig="#{djConf}">
+        </script>
+        #{autorequire}
+        #{css opts[:app]}
+        #{app_js opts[:app]}
+        <script type="text/javascript">
+        if (dijit._Widget) {
+          dojo.extend(dijit._Widget, {
+            viewid: ""
+          });
+          dijit._Widget.prototype.attributeMap.viewid = "";
+        }
+        </script>
       ]
     end
     #TODO: do it in a more clean way
@@ -55,7 +63,7 @@ module Dojo
     end
     def theme
       DojoConfig.dojo.theme
-    end 
+    end
     def app_js(name)
       app_path="#{webroot}/app/pages/#{name}"
       %Q[<script type="text/javascript" src="#{app_path}.js"></script>]
