@@ -1,4 +1,5 @@
 dojo.require("doh.runner");
+//dojo.require("dojo.robot");
 dojo.require("<%= full_name%>");
 
 dojo.addOnLoad(function () {
@@ -12,4 +13,5 @@ dojo.addOnLoad(function () {
 		//d.callback(true);
 		return d;
 	}]);
+	doh.run();
 });
