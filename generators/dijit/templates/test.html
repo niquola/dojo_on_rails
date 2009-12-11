@@ -3,7 +3,16 @@
 <html>
   <head>
     <title>Test <%= class_name %></title>
-    <%= dojo_helper_content %>
+
+    <meta name="description" content="<%= class_name %>"/>
+    <meta name="keywords" content="<%= class_name %>"/>
+
+    <link rel="stylesheet" href="/ria/src/app/themes/tundra/test.css" type="text/css" />
+    <script type="text/javascript" src="/ria/src/app/pages/test.js"></script>
+    <link rel="stylesheet" href="/ria/src/app/themes/tundra/chart.css" type="text/css" />
+    <script type="text/javascript" src="/ria/src/app/tests/views/common.js"></script>
+    <link rel="stylesheet" href="/ria/src/app/tests/views/common.css" type="text/css" />
+
     <link rel="stylesheet" href="<%= css_path %>" type="text/css" />
     <script src="<%= class_name %>.js"></script>
   </head>
